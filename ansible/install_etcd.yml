@@ -36,7 +36,7 @@
       loop:
         - etcd
         - etcdctl
-        - ectdutil
+        - etcdutl
 
     - name: "Create directory {{ item }}"
       ansible.builtin.file:
