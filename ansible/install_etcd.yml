@@ -32,7 +32,7 @@
     - name: "Move etcd to /usr/local/bin"
       copy:
         src: "{{ etcd_base_dir }}/etcd-v{{ etcd_version }}-linux-amd64/{{ item }}"
-        dest: "/user/local/bin/{{ item }}"
+        dest: "/usr/local/bin/{{ item }}"
       loop:
         - etcd
         - etcdctl
