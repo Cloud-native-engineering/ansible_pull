@@ -80,7 +80,7 @@
 
     - name: "Create etcd root-user"
       ansible.builtin.command:
-        cmd: "etcdctl user add root:\"{{ etcd_root_pw }}\" && etcdctl auth enable"
+        cmd: "etcdctl user add root:\"{{ etcd_root_pw }}\" && etcdctl --user=root --password=\"{{ etcd_root_pw }}\" auth enable"
 
   handlers:
     - name: "Reload systemd"
