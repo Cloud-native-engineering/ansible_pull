@@ -13,6 +13,15 @@
     etcd_group: "etcd"
 
   tasks:
+    - name: "Create private key (RSA, 4096 bits)"
+      community.crypto.openssl_privatekey:
+        path: "/etc/ssl/private/certificate.key"
+
+    - name: "Create simple self-signed certificate"
+      community.crypto.x509_certificate:
+        path: "/etc/ssl/private/certificate.pem"
+        privatekey_path: "/etc/ssl/private/certificate.key"
+        provider: selfsigned
     - name: "Create install dir"
       ansible.builtin.file:
         path: "{{ etcd_base_dir }}"
@@ -81,7 +90,7 @@
     - name: "Create etcd root-user"
       ansible.builtin.command:
         cmd: "etcdctl user add root:{{ etcd_root_pw }}"
-    
+
     - name: "Enable auth"
       ansible.builtin.command:
         cmd: "etcdctl --user=root:{{ etcd_root_pw }} auth enable"
