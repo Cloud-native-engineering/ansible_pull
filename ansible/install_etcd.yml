@@ -25,7 +25,7 @@
 
     - name: "Extract tarbell"
       ansible.builtin.unarchive:
-        src: "{{ etcd_base_dir }}/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+        src: "{{ etcd_base_dir }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
         dest: "{{ etcd_base_dir }}"
         remote_src: true
 
