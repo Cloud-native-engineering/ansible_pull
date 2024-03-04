@@ -13,6 +13,11 @@
     etcd_group: "etcd"
 
   tasks:
+    - name: "Create install dir"
+      ansible.builtin.file:
+        path: "{{ etcd_base_dir }}"
+        state: "directory"
+
     - name: "Download source packages from github"
       ansible.builtin.get_url:
         url: "https://github.com/etcd-io/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
