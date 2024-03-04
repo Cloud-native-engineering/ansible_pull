@@ -8,7 +8,7 @@
   vars:
     etcd_version: "3.5.12"
     etcd_base_dir: "/opt/etcd/{{ etcd_version }}"
-    etcd_root_pw: "{{ lookup('password', '/root/etcd_pw.yml length=15 chars=ascii_letters,digits,punctuation') }}"
+    etcd_root_pw: "{{ lookup('password', '/root/etcd_pw.yml length=15 chars=ascii_letters,digits') }}"
     etcd_user: "etcd"
     etcd_group: "etcd"
 
