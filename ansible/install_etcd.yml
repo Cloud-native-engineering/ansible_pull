@@ -38,17 +38,6 @@
         - etcdctl
         - etcdutl
 
-    - name: "Create directory {{ item }}"
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: "directory"
-        owner: "{{ etcd_user }}"
-        group: "{{ etcd_group }}"
-        mode: "0740"
-      loop:
-        - "/var/lib/etcd/default"
-        - "/etc/etcd"
-
     - name: "Create group {{ etcd_group }}"
       ansible.builtin.group:
         name: "{{ etcd_group }}"
@@ -60,6 +49,17 @@
         name: "{{ etcd_user }}"
         group: "{{ etcd_group }}"
         shell: "/bin/false"
+
+    - name: "Create directory {{ item }}"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: "directory"
+        owner: "{{ etcd_user }}"
+        group: "{{ etcd_group }}"
+        mode: "0740"
+      loop:
+        - "/var/lib/etcd/default"
+        - "/etc/etcd"
 
     - name: "Deploy systemd service"
       ansible.builtin.copy:
