@@ -78,6 +78,18 @@
         state: "started"
         enabled: true
 
+    - name: "Create etcd root password file"
+      ansible.builtin.copy:
+        content: "{{ etcd_root_pw }}"
+        dest: "/etc/etcd/etcd_root_pw"
+        owner: "root"
+        group: "root"
+        mode: "0400"
+
+    - name: "Create etcd root-user"
+      ansible.builtin.command:
+        cmd: "etcdctl user add root --password={{ etcd_root_pw }} && etcdctl auth enable"
+
   handlers:
     - name: "Reload systemd"
       ansible.builtin.systemd:
