@@ -1,0 +1,80 @@
+---
+
+- name: "Install ectd"
+  hosts: localhost
+  become: true
+  gather_facts: true
+
+  vars:
+    etcd_version: "3.5.12"
+    etcd_base_dir: "/opt/etcd/{{ etcd_version }}"
+    etcd_root_pw: "{{ lookup('password', '/root/etcd_pw.yml length=15 chars=ascii_letters,digits,punctuation') }}"
+    etcd_user: "etcd"
+    etcd_group: "etcd"
+
+  tasks:
+    - name: "Download source packages from github"
+      ansible.builtin.get_url:
+        url: "https://github.com/etcd-io/etcd/releases/download/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
+        dest: "{{ etcd_base_dir }}"
+
+    - name: "Extract tarbell"
+      ansible.builtin.unarchive:
+        src: "/opt/etcd-v{{ etcd_version }}-linux-amd64.tar.gz"
+        dest: "{{ etcd_base_dir }}"
+        remote_src: true
+
+    - name: "Move etcd to /usr/local/bin"
+      copy:
+        src: "{{ etcd_base_dir }}/{{ item }}"
+        dest: "/user/local/bin/{{ item }}"
+      loop:
+        - etcd
+        - etcdctl
+        - ectdutil
+
+    - name: "Create directory {{ item }}"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: "directory"
+        owner: "{{ etcd_user }}"
+        group: "{{ etcd_group }}"
+        mode: "0740"
+      loop:
+        - "/var/lib/etcd/default"
+        - "/etc/etcd"
+
+    - name: "Create group {{ etcd_group }}"
+      ansible.builtin.group:
+        name: "{{ etcd_group }}"
+        state: present
+        system: true
+
+    - name: "Create service user"
+      ansible.builtin.user:
+        name: "{{ etcd_user }}"
+        group: "{{ etcd_group }}"
+        shell: "/bin/false"
+
+    - name: "Deploy systemd service"
+      ansible.builtin.copy:
+        src: "etcd.service"
+        dest: "/etc/systemd/system/etcd.service"
+        owner: "root"
+        group: "root"
+        mode: "0440"
+      notify:
+        - Reload systemd
+
+    - name: "Enable and start etcd.service"
+      ansible.builtin.service:
+        name: "etcd.service"
+        state: "started"
+        enabled: true
+
+  handlers:
+    - name: "Reload systemd"
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+...

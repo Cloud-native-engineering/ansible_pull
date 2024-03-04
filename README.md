@@ -1,10 +1,7 @@
-# project_name
+# Ansible Pull
 
-> short_description
+This repository contains a collection of ansible plays to include in an cloud-init.
 
-## heading_2
-
-> text
 
 ## License
 

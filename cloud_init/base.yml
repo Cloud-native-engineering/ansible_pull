@@ -1,0 +1,19 @@
+#cloud-config
+
+users:
+  - name: yvesw
+    groups: sudo, users
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8gre6urT6Ar5FcvS4lRdJy/CnyAVZD7uZ4EXSnHa2R
+
+packages:
+  - git
+
+ansible:
+  install_method: distro
+  package_name: ansible
+  pull:
+    url: "https://github.com/Cloud-native-engineering/ansible_pull.git"
+    playbook_name: ...
