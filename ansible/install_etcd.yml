@@ -22,6 +22,7 @@
         path: "/etc/ssl/private/certificate.pem"
         privatekey_path: "/etc/ssl/private/certificate.key"
         provider: selfsigned
+
     - name: "Create install dir"
       ansible.builtin.file:
         path: "{{ etcd_base_dir }}"

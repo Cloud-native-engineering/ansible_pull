@@ -1,0 +1,24 @@
+---
+
+- name: "Install Prometheus"
+  hosts: localhost
+  gather_facts: true
+  become: true
+  vars:
+    prometheus_targets:
+      node:
+      - targets:
+        - localhost:9100
+        labels:
+          env: demosite
+
+  pre_tasks:
+    - name: "Download prometheus ansible collection"
+      ansible.builtin.shell:
+        cmd: "ansible-galaxy collection install prometheus.prometheus"
+
+  roles:
+    - prometheus.prometheus.prometheus
+    - prometheus.prometheus.node_exporter
+
+...

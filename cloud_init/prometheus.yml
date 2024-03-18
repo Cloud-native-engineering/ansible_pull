@@ -1,0 +1,25 @@
+#cloud-config
+
+users:
+  - name: yvesw
+    groups: sudo, users
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8gre6urT6Ar5FcvS4lRdJy/CnyAVZD7uZ4EXSnHa2R
+  - name: ubuntu
+    groups: sudo, users
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRI4IqTl6RNGbOJlpVLT6qSuRa34FqHtdOQaq1vxgTPPDesHMGrTIM2jaS2S6HgKMgW3C8COFXR23SQAcyF2C9G+H4MzTge/dmpFDJh3ram2N7HC/N1tB76W0nA05aQWvDHAHSqqB20pAstxvtq8DteGERCNj6sl9GRKDxwXdAthuRXwq+dM05cq6T7vDki/yMmJUYRmyGBEzKfci6XYBMQ079I/4x33NGGqsK23wFb3khqziCUTRtCwJe7frX9Z1ak2JG9RMdEf4l/5kGjOez0VptMcpdZM4C7uyklFtGIb9OjAPLHowgq0cCB9bL7h86U5FkdejLkC87Uzhm/Fo7D teacher
+
+packages:
+  - git
+
+ansible:
+  install_method: distro
+  package_name: ansible
+  pull:
+    url: "https://github.com/Cloud-native-engineering/ansible_pull.git"
+    playbook_name: "ansible/install_prometheus.yml"
