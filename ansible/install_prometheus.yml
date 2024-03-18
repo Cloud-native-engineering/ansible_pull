@@ -30,11 +30,14 @@
         owner: root
         group: root
 
-    - name: Create cert and key
-      ansible.builtin.openssl_certificate:
-        path: /etc/node_exporter/tls.cert
-        csr_path: /etc/node_exporter/tls.csr
-        privatekey_path: /etc/node_exporter/tls.key
+    - name: "Create private key (RSA, 4096 bits)"
+      community.crypto.openssl_privatekey:
+        path: "/etc/node_exporter/tls.key"
+
+    - name: "Create simple self-signed certificate"
+      community.crypto.x509_certificate:
+        path: "/etc/node_exporter/tls.cert"
+        privatekey_path: "/etc/node_exporter/tls.key"
         provider: selfsigned
 
   roles:
